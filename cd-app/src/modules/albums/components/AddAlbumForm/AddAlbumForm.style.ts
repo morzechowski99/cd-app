@@ -4,6 +4,5 @@ export const useStyles = makeStyles((theme) => ({
    paper: {
       paddingLeft: theme.spacing(2),
       paddingRight: theme.spacing(2),
-      paddingBottom: theme.spacing(4),
    },
 }));

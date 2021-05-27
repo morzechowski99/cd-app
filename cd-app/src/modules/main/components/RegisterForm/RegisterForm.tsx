@@ -1,11 +1,24 @@
-import { Button, Divider, Grid, Paper, Typography } from "@material-ui/core";
+import {
+   Box,
+   Button,
+   Divider,
+   Grid,
+   Paper,
+   Typography,
+} from "@material-ui/core";
 import { paths } from "config";
 import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-material-ui";
+import React from "react";
+import Loader from "shared/components/Loader/Loader";
 import PasswordField from "shared/components/PasswordField";
 import { useRedirect } from "shared/hooks/useRedirect";
 import { useStyles } from "./RegisterForm.style";
-import { useForm } from "./RegisterForm.utils";
+import {
+   useForm,
+   useValidateEmail,
+   useValidateLogin,
+} from "./RegisterForm.utils";
 
 export interface LoginFormProps {}
 
@@ -13,10 +26,12 @@ const LoginForm = () => {
    const formProps = useForm();
    const styles = useStyles();
    const redirectToRegister = useRedirect(paths.login);
+   const validateEmail = useValidateEmail();
+   const validateLogin = useValidateLogin();
    return (
       <Paper className={styles.paper}>
          <Formik {...formProps}>
-            {({ isValid }) => (
+            {({ isValid, isSubmitting }) => (
                <Form>
                   <Grid container justify="center" spacing={3}>
                      <Grid
@@ -43,8 +58,15 @@ const LoginForm = () => {
                            name="login"
                            label="Nazwa użytkownika"
                            fullWidth
+                           validate={validateLogin}
                         />
                      </Grid>
+                     {isSubmitting && (
+                        <Box position="absolute" height="50%" zIndex="modal">
+                           <Loader />
+                        </Box>
+                     )}
+
                      <Grid item xs={12} md={6}>
                         <Field
                            component={TextField}
@@ -52,6 +74,7 @@ const LoginForm = () => {
                            name="email"
                            label="Adres e-mail"
                            fullWidth
+                           validate={validateEmail}
                         />
                      </Grid>
                      <Grid item xs={12} md={6}>

@@ -1,5 +1,7 @@
-export const MODULE_NAME = 'main'
+export const MODULE_NAME = "main";
 
 export const paths = {
- main: ''
-}
+   main: "/",
+   login: "/login",
+   register: "/register",
+};

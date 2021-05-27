@@ -1,10 +1,11 @@
 import { Redirect, Route } from "react-router-dom";
 import { paths } from "config";
-//import { useAuth } from "shared/hooks";
+import { useAuth } from "shared/hooks/useAuth";
 import { ModuleRoute } from "../types/config";
 
 const PrivateRoute = (props: ModuleRoute) => {
-   if (true) {
+   const { isAuthenticated } = useAuth();
+   if (isAuthenticated) {
       return <Route {...props} />;
    } else return <Redirect to={paths.login} />;
 };

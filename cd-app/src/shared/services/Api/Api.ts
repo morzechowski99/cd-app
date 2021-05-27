@@ -1,13 +1,15 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import config from "config";
+import { Album } from "shared/types/interfaces";
+import Auth from "../Auth";
+import { LoginPayload, LoginResponse, RegisterPayload } from "./Api.types";
 //import Auth from "../Auth";
 
 class Api {
    protected api: AxiosInstance = axios.create({ baseURL: config.apiUrl });
 
    constructor() {
-      // this.api.interceptors.request.use(this.authenticate);
-      // this.api.interceptors.response(this.refreshToken)
+      this.api.interceptors.request.use(this.authenticate);
    }
 
    private authenticate(config: AxiosRequestConfig) {
@@ -16,21 +18,25 @@ class Api {
       return config;
    }
 
-   public async createUser(user: UserPayload) {
-      const response = await this.api.post<UserPayload>(
-         "/api/User/Register",
+   public async login(payload: LoginPayload) {
+      const { data } = await this.api.post<LoginResponse>(
+         "/user/login",
+         payload
+      );
+      Auth.setToken(data.token);
+      return;
+   }
+
+   public async createUser(user: RegisterPayload) {
+      const response = await this.api.post<RegisterPayload>(
+         "/user/Register",
          user
       );
       return response;
    }
 
-   public async activateUser(token: string, values: SetPasswordValues) {
-      const data: ActivateUserPayload = {
-         token: token,
-         password: values.password,
-         passwordConfirmation: values.passwordConfirmation,
-      };
-      const response = await this.api.post("/api/User/Activate", data);
+   public async getAlbums() {
+      const response = await this.api.get<Album[]>("/albums");
       return response;
    }
 }

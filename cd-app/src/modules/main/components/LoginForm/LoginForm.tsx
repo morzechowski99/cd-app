@@ -1,24 +1,39 @@
-import { Button, Divider, Grid, Paper, Typography } from "@material-ui/core";
+import {
+   Box,
+   Button,
+   Divider,
+   Grid,
+   Paper,
+   Typography,
+} from "@material-ui/core";
 import { paths } from "config";
 import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-material-ui";
+import React from "react";
+import Loader from "shared/components/Loader/Loader";
 import PasswordField from "shared/components/PasswordField";
 import { useRedirect } from "shared/hooks/useRedirect";
 import { useStyles } from "./LoginForm.style";
-import { useForm } from "./LoginForm.utils";
+import { useForm, useError } from "./LoginForm.utils";
 
 export interface LoginFormProps {}
 
 const LoginForm = () => {
    const formProps = useForm();
    const styles = useStyles();
+   const errorVisible = useError();
    const redirectToRegister = useRedirect(paths.register);
    return (
       <Paper className={styles.paper}>
          <Formik {...formProps}>
-            {({ isValid }) => (
+            {({ isValid, isSubmitting }) => (
                <Form>
                   <Grid container justify="center" spacing={3}>
+                     {isSubmitting && (
+                        <Box position="absolute" zIndex="modal" height="50%">
+                           <Loader />
+                        </Box>
+                     )}
                      <Grid item>
                         <Typography variant="h4">Zaloguj się!</Typography>
                      </Grid>
@@ -43,6 +58,14 @@ const LoginForm = () => {
                            fullWidth
                         />
                      </Grid>
+                     {errorVisible && (
+                        <Grid container item xs={12} justify="center">
+                           <Typography variant="body1" color="error">
+                              Podana nazwa użytkownika i/lub hasło są
+                              nieprawidłowe
+                           </Typography>
+                        </Grid>
+                     )}
                      <Grid item xs={12}>
                         <Button
                            type="submit"

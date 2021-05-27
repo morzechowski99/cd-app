@@ -1,3 +1,6 @@
+import { actions, selectors } from "modules/main/store";
+import { useDispatch, useSelector } from "react-redux";
+import { RegisterPayload } from "shared/services/Api";
 import { object, string, SchemaOf, ref } from "yup";
 
 export interface RegisterFormValues {
@@ -38,11 +41,49 @@ export const useValidationSchema = (): SchemaOf<RegisterFormValues> => {
 };
 
 export const useOnSubmit = () => {
-   return async (values: RegisterFormValues) => {};
+   const dispatch = useDispatch();
+   //@ts-ignore
+   return async (values: RegisterFormValues, { validateForm }) => {
+      var user: RegisterPayload = {
+         name: values.name,
+         surname: values.surname,
+         email: values.email,
+         password: values.password,
+         login: values.login,
+      };
+      await dispatch(actions.registerUser(user));
+      validateForm(values);
+   };
 };
 
 export const useForm = () => {
    const validationSchema = useValidationSchema();
    const onSubmit = useOnSubmit();
    return { initialValues, validationSchema, onSubmit };
+};
+
+export const useValidateEmail = () => {
+   const emailExists = useSelector(selectors.emailExists);
+   const dispatch = useDispatch();
+   return (value: string) => {
+      let error;
+      if (emailExists) {
+         error = "Podany adres emaile jest juz zajęty";
+         dispatch(actions.resetEmailExists());
+      }
+      return error;
+   };
+};
+
+export const useValidateLogin = () => {
+   const loginExists = useSelector(selectors.loginExists);
+   const dispatch = useDispatch();
+   return (value: string) => {
+      let error;
+      if (loginExists) {
+         error = "Podana nazwa użytkownika jest już zajęta";
+         dispatch(actions.resetLoginExists());
+      }
+      return error;
+   };
 };
