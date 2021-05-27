@@ -1,4 +1,6 @@
-﻿using System;
+﻿using cd_app_API.DTOs;
+using cd_app_API.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,5 +11,6 @@ namespace cd_app_API.Interfaces
     {
         string HashPassword(string password);
         bool VerifyPassword(string actualPassword, string hashedPassword);
+        AuthData GetAuthData(AppUser user);
     }
 }

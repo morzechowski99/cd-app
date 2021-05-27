@@ -62,3 +62,6 @@ E:\studia\Semestr VI\js\proj3\cd_app_API\cd_app_API\bin\Debug\net5.0\runtimes\wi
 E:\studia\Semestr VI\js\proj3\cd_app_API\cd_app_API\bin\Debug\net5.0\AutoMapper.dll
 E:\studia\Semestr VI\js\proj3\cd_app_API\cd_app_API\bin\Debug\net5.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 E:\studia\Semestr VI\js\proj3\cd_app_API\cd_app_API\bin\Debug\net5.0\CryptoHelper.dll
+E:\studia\Semestr VI\js\proj3\cd_app_API\cd_app_API\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
+E:\studia\Semestr VI\js\proj3\cd_app_API\cd_app_API\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+E:\studia\Semestr VI\js\proj3\cd_app_API\cd_app_API\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll

@@ -31,7 +31,9 @@ namespace cd_app_API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson(options => 
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "cd_app_API", Version = "v1" });
@@ -44,7 +46,10 @@ namespace cd_app_API
             services.AddAutoMapper(typeof(Startup));
 
             services.AddSingleton<IAuthService>(
-                new AuthService()
+                new AuthService(
+                    Configuration.GetValue<string>("JWTSecretKey"),
+                    Configuration.GetValue<int>("JWTLifespan")
+                    )
             );
         }
 
@@ -59,6 +64,11 @@ namespace cd_app_API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors(x => x
+            .AllowAnyMethod()
+            .AllowAnyOrigin()
+            .AllowAnyHeader());
 
             app.UseRouting();
 

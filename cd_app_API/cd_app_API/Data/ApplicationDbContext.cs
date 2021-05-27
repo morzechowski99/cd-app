@@ -22,6 +22,10 @@ namespace cd_app_API.Data
         }
 
         public virtual DbSet<AppUser> Users { get; set; }
+        public virtual DbSet<Album> Albums { get; set; }
+        public virtual DbSet<AlbumArtist> AlbumArtists { get; set; }
+        public virtual DbSet<Artist> Artists { get; set; }
+        public virtual DbSet<Track> Tracks { get; set; }
 
     }
 }

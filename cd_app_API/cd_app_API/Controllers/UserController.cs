@@ -70,5 +70,36 @@ namespace cd_app_API.Controllers
             var user = await _context.Users.Where(user => user.Email == mail).FirstOrDefaultAsync();
             return user == null ? false : true;
         }
+
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> Login(LoginDto login)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var user = await _context.Users
+                    .Where(user => user.Login == login.Login)
+                    .FirstOrDefaultAsync();
+
+                if (user == null)
+                    return NotFound("No user with login");
+
+                var passwordValid = _auth.VerifyPassword(login.Password, user.PasswordHashed);
+
+                if (!passwordValid)
+                    return BadRequest("Invalid password");
+
+                AuthData authData = _auth.GetAuthData(user);
+
+                return Ok(authData);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
     }
 }
