@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using cd_app_API.Data;
 using cd_app_API.DTOs;
+using cd_app_API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -50,6 +51,77 @@ namespace cd_app_API.Controllers
                 }
 
                 return Ok(albumDtos);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(AlbumCreateDto albumDto)
+        {
+            try
+            {
+                if (albumDto == null)
+                    return BadRequest();
+
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var albumDb = _mapper.Map<Album>(albumDto);
+
+                _context.Add(albumDb);
+
+                foreach(var artist in albumDto.ArtistsIds)
+                {
+                    AlbumArtist albumArtist = new AlbumArtist() { Album = albumDb, ArtistId = artist };
+                    _context.Add(albumArtist);
+                }
+
+                await _context.SaveChangesAsync();
+
+                return Ok();
+
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAlbum(int? id)
+        {
+            try
+            {
+                if (id == null)
+                    return BadRequest();
+
+                var album = await _context.Albums
+                    .Include(a => a.AlbumArtists)
+                    .Include(a => a.Tracks)
+                    .Where(a => a.Id == id)
+                    .FirstOrDefaultAsync();
+
+                if (album == null)
+                    return NotFound();
+
+                foreach (var albumArtist in album.AlbumArtists)
+                {
+                    _context.Remove(albumArtist);
+                }
+
+                foreach (var track in album.Tracks)
+                {
+                    _context.Remove(track);
+                }
+
+                _context.Remove(album);
+
+                await _context.SaveChangesAsync();
+
+                return Ok();
             }
             catch
             {
