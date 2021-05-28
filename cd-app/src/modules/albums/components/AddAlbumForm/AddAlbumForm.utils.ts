@@ -1,3 +1,7 @@
+import { actions } from "modules/albums/store";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Artist } from "shared/types/interfaces";
 import { object, string, SchemaOf, number, array } from "yup";
 
 interface Track {
@@ -44,11 +48,34 @@ export const useValidationSchema = (): SchemaOf<AddAlbumValues> => {
 };
 
 export const useOnSubmit = () => {
-   return async (values: AddAlbumValues) => {};
+   const dispatch = useDispatch();
+   return async (values: AddAlbumValues) => {
+      await dispatch(actions.createAlbum(values));
+   };
 };
 
 export const useForm = () => {
    const validationSchema = useValidationSchema();
    const onSubmit = useOnSubmit();
    return { initialValues, validationSchema, onSubmit };
+};
+
+export const useSelectedArtists = (): [
+   Artist[],
+   (artist: Artist) => void,
+   (id: number) => void
+] => {
+   const [selectedArtists, setSelectedArtists] = useState<Artist[]>([]);
+
+   const addArtist = (artist: Artist) => {
+      if (selectedArtists.findIndex((a) => a.id === artist.id) === -1)
+         setSelectedArtists([...selectedArtists, artist]);
+   };
+
+   const removeArtist = (id: number) => {
+      const newArtists = selectedArtists.filter((artist) => artist.id !== id);
+      setSelectedArtists([...newArtists]);
+   };
+
+   return [selectedArtists, addArtist, removeArtist];
 };

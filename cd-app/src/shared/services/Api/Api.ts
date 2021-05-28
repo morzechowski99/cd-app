@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import config from "config";
-import { Album } from "shared/types/interfaces";
+import { AddAlbumValues } from "modules/albums/components/AddAlbumForm/AddAlbumForm.utils";
+import { Album, Artist } from "shared/types/interfaces";
 import Auth from "../Auth";
 import { LoginPayload, LoginResponse, RegisterPayload } from "./Api.types";
 //import Auth from "../Auth";
@@ -37,6 +38,16 @@ class Api {
 
    public async getAlbums() {
       const response = await this.api.get<Album[]>("/albums");
+      return response;
+   }
+
+   public async getArtists() {
+      const response = await this.api.get<Artist[]>("/artists");
+      return response;
+   }
+
+   public async createAlbum(album: AddAlbumValues) {
+      const response = await this.api.post<Artist[]>("/albums", album);
       return response;
    }
 }

@@ -13,6 +13,9 @@ namespace cd_app_API.Mapper
         public FromDtoProfile()
         {
             CreateMap<RegistrationDto, AppUser>();
+            CreateMap<ArtistDto, Artist>();
+            CreateMap<AlbumCreateDto, Album>();
+            CreateMap<TrackCreateDto, Track>();
         }
     }
 }

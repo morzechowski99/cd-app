@@ -24,7 +24,7 @@ export const useValidationSchema = (): SchemaOf<LoginFormValues> => {
 export const useOnSubmit = () => {
    const dispatch = useDispatch();
    return async (values: LoginFormValues) => {
-      dispatch(actions.auth.login(values));
+      await dispatch(actions.auth.login(values));
    };
 };
 
