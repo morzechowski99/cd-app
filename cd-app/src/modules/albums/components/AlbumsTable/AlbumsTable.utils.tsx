@@ -9,10 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/DeleteOutline";
 import DetailsIcon from "@material-ui/icons/Details";
+import { useRedirect } from "shared/hooks/useRedirect";
+import { paths } from "config";
 
 export const useColumns = (): GridColDef[] => {
    const onSelect = useOnSelect();
    const onDeleteSelect = useOnDeleteSelect();
+   const onEditSelect = useOnEditSelect();
    return [
       {
          field: "title",
@@ -38,7 +41,7 @@ export const useColumns = (): GridColDef[] => {
          renderCell: (params: GridCellParams) => {
             const id = Number.parseInt(params.row.id as string);
             return (
-               <IconButton>
+               <IconButton onClick={() => onEditSelect(id)}>
                   <EditIcon />
                </IconButton>
             );
@@ -99,6 +102,19 @@ const useOnSelect = () => {
    };
 };
 
+const useOnEditSelect = () => {
+   const dispatch = useDispatch();
+   const redirect = useRedirect(paths.editAlbum);
+   const albums = useSelector(selectors.getAlbums);
+   return (id: number) => {
+      const album = albums.find((album) => album.id === id);
+      if (album !== undefined) {
+         dispatch(actions.selectAlbum(album));
+         redirect();
+      }
+   };
+};
+
 const useOnDeleteSelect = () => {
    const dispatch = useDispatch();
    const albums = useSelector(selectors.getAlbums);
@@ -116,7 +132,7 @@ export const useOnDeleteDialogClose = () => {
    return async (result: boolean, value: any) => {
       if (result === true) {
          if (value !== undefined) {
-            dispatch(actions.deleteAlbum(value as number));
+            await dispatch(actions.deleteAlbum(value as number));
          }
       } else dispatch(actions.closeDeleteModal());
    };

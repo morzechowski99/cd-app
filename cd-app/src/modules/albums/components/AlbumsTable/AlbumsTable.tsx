@@ -36,6 +36,7 @@ const AlbumsTable = () => {
             columns={columns}
             loading={loading === LoadingStatus.Pending}
             components={{ Toolbar: GridToolbar }}
+            rowsPerPageOptions={[5, 15, 25, 50, 100]}
          />
       </div>
    );

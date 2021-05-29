@@ -15,7 +15,9 @@ namespace cd_app_API.Mapper
             CreateMap<RegistrationDto, AppUser>();
             CreateMap<ArtistDto, Artist>();
             CreateMap<AlbumCreateDto, Album>();
+            CreateMap<AlbumEditDto, Album>();
             CreateMap<TrackCreateDto, Track>();
+            CreateMap<TrackEditDto, Track>();
         }
     }
 }

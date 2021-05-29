@@ -10,7 +10,7 @@ import { Field, FieldArray, Form, Formik } from "formik";
 import { TextField } from "formik-material-ui";
 import { useStyles } from "modules/main/components/LoginForm/LoginForm.style";
 import { useState } from "react";
-import { useForm, useSelectedArtists } from "./AddAlbumForm.utils";
+import { useForm, useSelectedArtists } from "./EditAlbumForm.utils";
 import TextFieldMaterial from "@material-ui/core/TextField";
 import {
    Autocomplete,
@@ -23,9 +23,9 @@ import ArtistsTable from "../ArtistsTable/ArtistsTable";
 import { DeleteOutlined } from "@material-ui/icons";
 import Loader from "shared/components/Loader/Loader";
 
-export interface AddAlbumFormProps {}
+export interface EditAlbumFormProps {}
 
-const AddAlbumForm = () => {
+const EditAlbumForm = () => {
    const styles = useStyles();
    const formProps = useForm();
    const artists = useSelector(selectors.getArtists);
@@ -55,7 +55,7 @@ const AddAlbumForm = () => {
                         direction="column"
                         alignItems="center"
                      >
-                        <Typography variant="h4">Dodaj album</Typography>
+                        <Typography variant="h4">Edytuj album</Typography>
                      </Grid>
                      <Grid item xs={12} md={4}>
                         <Field
@@ -191,18 +191,13 @@ const AddAlbumForm = () => {
                                  {values["tracks"]?.length > 0 &&
                                     values["tracks"].map((track, idx) => (
                                        <>
-                                          <Grid
-                                             container
-                                             spacing={2}
-                                             alignContent="flex-start"
-                                          >
+                                          <Grid container spacing={2}>
                                              <Grid
                                                 item
                                                 container
                                                 xs={12}
                                                 md={11}
                                                 spacing={2}
-                                                alignContent="flex-start"
                                              >
                                                 <Grid item xs={12} md={4}>
                                                    <Field
@@ -274,7 +269,7 @@ const AddAlbumForm = () => {
                            color="primary"
                            fullWidth
                         >
-                           Dodaj
+                           Edytuj
                         </Button>
                      </Grid>
                   </Grid>
@@ -285,4 +280,4 @@ const AddAlbumForm = () => {
    );
 };
 
-export default AddAlbumForm;
+export default EditAlbumForm;

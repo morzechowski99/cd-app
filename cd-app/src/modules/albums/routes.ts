@@ -1,6 +1,7 @@
 import { ModuleRoute } from "shared/types/config";
 import AddAlbum from "./pages/AddAlbum";
 import AlbumList from "./pages/AlbumList";
+import EditAlbum from "./pages/EditAlbum";
 
 const routes: ModuleRoute[] = [
    {
@@ -14,6 +15,12 @@ const routes: ModuleRoute[] = [
       public: false,
       exact: true,
       component: () => AddAlbum(),
+   },
+   {
+      path: "/editAlbum",
+      public: false,
+      exact: true,
+      component: () => EditAlbum(),
    },
 ];
 
