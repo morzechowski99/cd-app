@@ -23,6 +23,14 @@ export const createAlbum = createAsyncThunk(
    }
 );
 
+export const deleteAlbum = createAsyncThunk(
+   "albums/delete",
+   async (id: number) => {
+      const response = await api.deleteAlbum(id);
+      return { response: response, id: id };
+   }
+);
+
 export const openDetailsModal = createAction("albums/openDetailsModal");
 
 export const closeDetailsModal = createAction("albums/closeDetailsModal");
@@ -30,3 +38,7 @@ export const closeDetailsModal = createAction("albums/closeDetailsModal");
 export const resetState = createAction("albums/reset");
 
 export const selectAlbum = createAction<Album>("albums/selectAlbum");
+
+export const openDeleteModal = createAction("albums/delteDialogOpen");
+
+export const closeDeleteModal = createAction("albums/closeDeleteDialog");
