@@ -3,10 +3,13 @@ import { createReducer } from "@reduxjs/toolkit";
 import { LoadingStatus } from "shared/types/enums";
 import { Album, Artist } from "shared/types/interfaces";
 import {
+   closeDeleteModal,
    closeDetailsModal,
    createAlbum,
+   deleteAlbum,
    getAlbums,
    getArtists,
+   openDeleteModal,
    openDetailsModal,
    resetState,
    selectAlbum,
@@ -20,6 +23,7 @@ interface State {
    isDetailsOpen: boolean;
    selectedAlbum: Album | null;
    isCreated: boolean;
+   isDeleteDialogOpen: boolean;
 }
 
 const initialState: State = {
@@ -30,6 +34,7 @@ const initialState: State = {
    isDetailsOpen: false,
    selectedAlbum: null,
    isCreated: false,
+   isDeleteDialogOpen: false,
 };
 
 export default createReducer(initialState, (builder) => {
@@ -73,6 +78,22 @@ export default createReducer(initialState, (builder) => {
          state.loading = LoadingStatus.Failed;
          state.error = action.error.message;
       })
+      .addCase(deleteAlbum.pending, (state) => {
+         state.loading = LoadingStatus.Pending;
+         state.error = null;
+      })
+      .addCase(deleteAlbum.fulfilled, (state, action) => {
+         state.loading = LoadingStatus.Succeeded;
+         state.error = null;
+         state.isDeleteDialogOpen = false;
+         state.albums = state.albums.filter(
+            (album) => album.id !== action.payload.id
+         );
+      })
+      .addCase(deleteAlbum.rejected, (state, action) => {
+         state.loading = LoadingStatus.Failed;
+         state.error = action.error.message;
+      })
       .addCase(openDetailsModal, (state) => {
          state.isDetailsOpen = true;
       })
@@ -83,8 +104,15 @@ export default createReducer(initialState, (builder) => {
          state.isDetailsOpen = false;
          state.selectedAlbum = null;
          state.isCreated = false;
+         state.isDeleteDialogOpen = false;
       })
       .addCase(selectAlbum, (state, action) => {
          state.selectedAlbum = action.payload;
+      })
+      .addCase(openDeleteModal, (state) => {
+         state.isDeleteDialogOpen = true;
+      })
+      .addCase(closeDeleteModal, (state) => {
+         state.isDeleteDialogOpen = false;
       });
 });

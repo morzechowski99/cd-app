@@ -42,7 +42,7 @@ const ConfirmationDialog: React.FunctionComponent<ConfirmationDialogProps> = (
          </DialogContent>
          <DialogActions>
             <Button variant="outlined" onClick={handleCancel} color="primary">
-               Potwierdź
+               Anuluj
             </Button>
             <Button
                variant="contained"
@@ -50,7 +50,7 @@ const ConfirmationDialog: React.FunctionComponent<ConfirmationDialogProps> = (
                onClick={handleOk}
                color="primary"
             >
-               Anuluj
+               Potwierdź
             </Button>
          </DialogActions>
       </Dialog>

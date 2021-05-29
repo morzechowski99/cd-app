@@ -50,6 +50,11 @@ class Api {
       const response = await this.api.post<Artist[]>("/albums", album);
       return response;
    }
+
+   public async deleteAlbum(id: number) {
+      const response = await this.api.delete("/albums?id=" + id);
+      return response;
+   }
 }
 
 export default Api;

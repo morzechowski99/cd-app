@@ -5,15 +5,14 @@ import {
    GridRowsProp,
 } from "@material-ui/data-grid";
 import { actions, selectors } from "modules/albums/store";
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/DeleteOutline";
 import DetailsIcon from "@material-ui/icons/Details";
-import { Album } from "shared/types/interfaces";
 
 export const useColumns = (): GridColDef[] => {
    const onSelect = useOnSelect();
+   const onDeleteSelect = useOnDeleteSelect();
    return [
       {
          field: "title",
@@ -66,11 +65,14 @@ export const useColumns = (): GridColDef[] => {
          sortable: false,
          filterable: false,
          flex: 0.4,
-         renderCell: (params: GridCellParams) => (
-            <IconButton>
-               <DeleteIcon />
-            </IconButton>
-         ),
+         renderCell: (params: GridCellParams) => {
+            const id = Number.parseInt(params.row.id as string);
+            return (
+               <IconButton onClick={() => onDeleteSelect(id)}>
+                  <DeleteIcon />
+               </IconButton>
+            );
+         },
       },
    ];
 };
@@ -94,5 +96,28 @@ const useOnSelect = () => {
          dispatch(actions.selectAlbum(album));
          dispatch(actions.openDetailsModal());
       }
+   };
+};
+
+const useOnDeleteSelect = () => {
+   const dispatch = useDispatch();
+   const albums = useSelector(selectors.getAlbums);
+   return (id: number) => {
+      const album = albums.find((album) => album.id === id);
+      if (album !== undefined) {
+         dispatch(actions.selectAlbum(album));
+         dispatch(actions.openDeleteModal());
+      }
+   };
+};
+
+export const useOnDeleteDialogClose = () => {
+   const dispatch = useDispatch();
+   return async (result: boolean, value: any) => {
+      if (result === true) {
+         if (value !== undefined) {
+            dispatch(actions.deleteAlbum(value as number));
+         }
+      } else dispatch(actions.closeDeleteModal());
    };
 };
