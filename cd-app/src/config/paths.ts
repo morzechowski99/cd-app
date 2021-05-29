@@ -4,6 +4,7 @@ const paths = {
    register: "/register",
    albums: "/albums",
    addAlbum: "/addAlbum",
+   editAlbum: "/editAlbum",
 };
 
 export default paths;

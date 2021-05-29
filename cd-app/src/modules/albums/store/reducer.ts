@@ -1,5 +1,4 @@
 import { createReducer } from "@reduxjs/toolkit";
-
 import { LoadingStatus } from "shared/types/enums";
 import { Album, Artist } from "shared/types/interfaces";
 import {
@@ -7,6 +6,7 @@ import {
    closeDetailsModal,
    createAlbum,
    deleteAlbum,
+   editAlbum,
    getAlbums,
    getArtists,
    openDeleteModal,
@@ -23,6 +23,7 @@ interface State {
    isDetailsOpen: boolean;
    selectedAlbum: Album | null;
    isCreated: boolean;
+   isEdited: boolean;
    isDeleteDialogOpen: boolean;
 }
 
@@ -34,6 +35,7 @@ const initialState: State = {
    isDetailsOpen: false,
    selectedAlbum: null,
    isCreated: false,
+   isEdited: false,
    isDeleteDialogOpen: false,
 };
 
@@ -94,6 +96,19 @@ export default createReducer(initialState, (builder) => {
          state.loading = LoadingStatus.Failed;
          state.error = action.error.message;
       })
+      .addCase(editAlbum.pending, (state) => {
+         state.loading = LoadingStatus.Pending;
+         state.error = null;
+      })
+      .addCase(editAlbum.fulfilled, (state, action) => {
+         state.loading = LoadingStatus.Succeeded;
+         state.error = null;
+         state.isEdited = true;
+      })
+      .addCase(editAlbum.rejected, (state, action) => {
+         state.loading = LoadingStatus.Failed;
+         state.error = action.error.message;
+      })
       .addCase(openDetailsModal, (state) => {
          state.isDetailsOpen = true;
       })
@@ -105,6 +120,7 @@ export default createReducer(initialState, (builder) => {
          state.selectedAlbum = null;
          state.isCreated = false;
          state.isDeleteDialogOpen = false;
+         state.isEdited = false;
       })
       .addCase(selectAlbum, (state, action) => {
          state.selectedAlbum = action.payload;

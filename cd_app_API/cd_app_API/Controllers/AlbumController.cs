@@ -2,6 +2,7 @@
 using cd_app_API.Data;
 using cd_app_API.DTOs;
 using cd_app_API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ namespace cd_app_API.Controllers
 {
     [ApiController]
     [Route("albums")]
+    [Authorize]
     public class AlbumController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -122,6 +124,55 @@ namespace cd_app_API.Controllers
                 await _context.SaveChangesAsync();
 
                 return Ok();
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> EditAlbum(int? id, AlbumEditDto albumDto)
+        {
+            try
+            {
+                if (albumDto == null || id ==null)
+                    return BadRequest();
+
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var albumDb = await _context.Albums
+                    .Include(a => a.AlbumArtists)
+                    .Include(a => a.Tracks)
+                    .Where(a => a.Id == id)
+                    .FirstOrDefaultAsync();
+
+                albumDb = _mapper.Map(albumDto,albumDb);
+
+                _context.Update(albumDb);
+
+                foreach (var albumArtist in albumDb.AlbumArtists)
+                {
+                    if(!albumDto.ArtistsIds.Contains(albumArtist.ArtistId))
+                    {
+                        _context.Remove(albumArtist);
+                    }
+                }
+
+                foreach (var artist in albumDto.ArtistsIds)
+                {
+                    if (albumDb.AlbumArtists.FirstOrDefault(aa => aa.ArtistId == artist) == null)
+                    {
+                        AlbumArtist albumArtist = new AlbumArtist() { Album = albumDb, ArtistId = artist };
+                        _context.Add(albumArtist);
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+
+                return Ok();
+
             }
             catch
             {

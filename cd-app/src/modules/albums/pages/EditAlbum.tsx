@@ -3,8 +3,8 @@ import { paths } from "config";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router";
-import AddAlbumForm from "../components/AddAlbumForm/AddAlbumForm";
 import { actions, selectors } from "../store";
+import EditAlbumForm from "../components/EditAlbumForm/EditAlbumForm";
 
 const useStyles = makeStyles((theme) => ({
    root: {
@@ -12,21 +12,22 @@ const useStyles = makeStyles((theme) => ({
    },
 }));
 
-export interface AddAlbumProps {}
+export interface EditAlbumProps {}
 
-const AddAlbum = () => {
+const EditAlbum = () => {
    const dispatch = useDispatch();
    useEffect(() => {
       dispatch(actions.getArtists());
    }, [dispatch]);
    const classes = useStyles();
-   const isCreated = useSelector(selectors.isCreated);
-   if (isCreated) return <Redirect to={paths.albums} />;
+   const isEdited = useSelector(selectors.isEdited);
+   const selectedAlbum = useSelector(selectors.getSelectedAlbum);
+   if (isEdited || !selectedAlbum) return <Redirect to={paths.albums} />;
    return (
       <Container className={classes.root} maxWidth="lg">
-         <AddAlbumForm />
+         <EditAlbumForm />
       </Container>
    );
 };
 
-export default AddAlbum;
+export default EditAlbum;

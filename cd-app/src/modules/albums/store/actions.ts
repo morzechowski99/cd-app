@@ -31,6 +31,15 @@ export const deleteAlbum = createAsyncThunk(
    }
 );
 
+export const editAlbum = createAsyncThunk(
+   "albums/edit",
+   async (payload: { id: number; album: AddAlbumValues }) => {
+      const { id, album } = payload;
+      const response = await api.editAlbum(id, album);
+      return response;
+   }
+);
+
 export const openDetailsModal = createAction("albums/openDetailsModal");
 
 export const closeDetailsModal = createAction("albums/closeDetailsModal");

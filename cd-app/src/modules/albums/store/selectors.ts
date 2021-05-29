@@ -15,5 +15,7 @@ export const getArtists = (state: RootState) => state.albums.artists;
 
 export const isCreated = (state: RootState) => state.albums.isCreated;
 
+export const isEdited = (state: RootState) => state.albums.isEdited;
+
 export const isDeleteDialogOpen = (state: RootState) =>
    state.albums.isDeleteDialogOpen;

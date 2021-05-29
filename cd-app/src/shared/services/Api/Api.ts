@@ -55,6 +55,11 @@ class Api {
       const response = await this.api.delete("/albums?id=" + id);
       return response;
    }
+
+   public async editAlbum(id: number, album: AddAlbumValues) {
+      const response = await this.api.put("/albums?id=" + id, album);
+      return response;
+   }
 }
 
 export default Api;
