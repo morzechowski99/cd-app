@@ -13,6 +13,7 @@ import { Dashboard, Album } from "@material-ui/icons";
 import { NavLink } from "react-router-dom";
 import { paths } from "config";
 import { useAuth } from "shared/hooks/useAuth";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 const drawerWidth = 240;
 
@@ -75,6 +76,18 @@ const Drawer = () => {
                         <Album />
                      </ListItemIcon>
                      <ListItemText primary={"Albumy"} />
+                  </ListItem>
+                  <ListItem
+                     button
+                     exact={true}
+                     component={NavLink}
+                     to={paths.artists}
+                     activeClassName="Mui-selected"
+                  >
+                     <ListItemIcon>
+                        <AccountCircleIcon />
+                     </ListItemIcon>
+                     <ListItemText primary={"Artyści"} />
                   </ListItem>
                </List>
             )}

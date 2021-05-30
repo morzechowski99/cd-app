@@ -1,6 +1,8 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import config from "config";
 import { AddAlbumValues } from "modules/albums/components/AddAlbumForm/AddAlbumForm.utils";
+import { AddArtistValues } from "modules/artists/components/AddArtistModal/AddArtistModal.utils";
+import { EditArtistValues } from "modules/artists/components/EditArtistModal/EditArtistModal.utils";
 import { Album, Artist } from "shared/types/interfaces";
 import Auth from "../Auth";
 import { LoginPayload, LoginResponse, RegisterPayload } from "./Api.types";
@@ -47,7 +49,12 @@ class Api {
    }
 
    public async createAlbum(album: AddAlbumValues) {
-      const response = await this.api.post<Artist[]>("/albums", album);
+      const response = await this.api.post("/albums", album);
+      return response;
+   }
+
+   public async createArtist(artist: AddArtistValues) {
+      const response = await this.api.post("/artists", artist);
       return response;
    }
 
@@ -56,8 +63,18 @@ class Api {
       return response;
    }
 
+   public async deleteArtist(id: number) {
+      const response = await this.api.delete("/artists?id=" + id);
+      return response;
+   }
+
    public async editAlbum(id: number, album: AddAlbumValues) {
       const response = await this.api.put("/albums?id=" + id, album);
+      return response;
+   }
+
+   public async editArtist(id: number, artist: EditArtistValues) {
+      const response = await this.api.put("/artists?id=" + id, artist);
       return response;
    }
 }

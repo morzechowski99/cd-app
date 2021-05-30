@@ -39,4 +39,5 @@ export interface Artist {
    gender: string;
    musicCategory: string;
    albums: Album[];
+   deletable: boolean;
 }
