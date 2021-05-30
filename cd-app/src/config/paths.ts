@@ -5,6 +5,7 @@ const paths = {
    albums: "/albums",
    addAlbum: "/addAlbum",
    editAlbum: "/editAlbum",
+   artists: "/artists",
 };
 
 export default paths;

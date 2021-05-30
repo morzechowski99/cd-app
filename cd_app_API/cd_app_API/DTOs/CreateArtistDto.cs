@@ -5,14 +5,11 @@ using System.Threading.Tasks;
 
 namespace cd_app_API.DTOs
 {
-    public class ArtistDto
+    public class CreateArtistDto
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Gender { get; set; }
         public string MusicCategory { get; set; }
-        public bool Deletable { get; set; }
-        public List<AlbumDto> Albums { get; set; }
     }
 }

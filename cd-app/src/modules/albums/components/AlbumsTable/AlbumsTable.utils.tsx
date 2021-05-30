@@ -41,7 +41,7 @@ export const useColumns = (): GridColDef[] => {
          renderCell: (params: GridCellParams) => {
             const id = Number.parseInt(params.row.id as string);
             return (
-               <IconButton onClick={() => onEditSelect(id)}>
+               <IconButton onClick={() => onEditSelect(id)} color="primary">
                   <EditIcon />
                </IconButton>
             );
@@ -56,7 +56,7 @@ export const useColumns = (): GridColDef[] => {
          renderCell: (params: GridCellParams) => {
             const id = Number.parseInt(params.row.id as string);
             return (
-               <IconButton onClick={() => onSelect(id)}>
+               <IconButton onClick={() => onSelect(id)} color="primary">
                   <DetailsIcon />
                </IconButton>
             );
@@ -71,7 +71,7 @@ export const useColumns = (): GridColDef[] => {
          renderCell: (params: GridCellParams) => {
             const id = Number.parseInt(params.row.id as string);
             return (
-               <IconButton onClick={() => onDeleteSelect(id)}>
+               <IconButton onClick={() => onDeleteSelect(id)} color="primary">
                   <DeleteIcon />
                </IconButton>
             );
