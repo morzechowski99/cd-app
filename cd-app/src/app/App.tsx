@@ -9,12 +9,18 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { reducer as common } from "shared/store";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { plPL } from "@material-ui/data-grid";
+import { green, purple } from "@material-ui/core/colors";
 
 export const store = configureStore({
    reducer: combineReducers({ ...reducers, common }),
 });
 
-const theme = createMuiTheme({}, plPL);
+const theme = createMuiTheme({
+   palette: {
+      primary: purple,
+      secondary: green,
+   }
+}, plPL);
 
 export type RootState = ReturnType<typeof store.getState>;
 
