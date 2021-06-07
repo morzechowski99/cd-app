@@ -2,6 +2,7 @@
 using cd_app_API.Data;
 using cd_app_API.DTOs;
 using cd_app_API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ namespace cd_app_API.Controllers
 {
     [ApiController]
     [Route("artists")]
+    [Authorize]
     public class ArtistsController : ControllerBase
     {
         private readonly IMapper _mapper;

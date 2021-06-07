@@ -1,3 +1,4 @@
+import { ThemeProvider } from '@material-ui/core/styles';
 import { Module } from '../../shared/types/config'
 import routes from './routes'
 import { reducer } from './store'
